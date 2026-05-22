@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 6: School II Vocabulary Practice</title>
+    <style>
+        :root {
+            --primary: #2c5282;
+            --primary-dark: #1a365d;
+            --success: #48bb78;
+            --error: #f56565;
+            --bg-color: #f7fafc;
+            --card-bg: #ffffff;
+            --text-color: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        h2 {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress {
+            font-size: 14px;
+            color: #a0aec0;
+            margin-bottom: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        /* Drawing/Illustration Box */
+        .image-container {
+            background-color: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            height: 130px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .school-icon {
+            width: 85px;
+            height: 85px;
+            fill: #4a5568;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            min-height: 50px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        button.option-btn {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        button.option-btn:hover:not(:disabled) {
+            background: #f8fafc;
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        button.option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .correct {
+            background: #c6f6d5 !important;
+            border-color: var(--success) !important;
+            color: #22543d !important;
+            font-weight: bold !important;
+            box-shadow: 0 4px 10px rgba(72,187,120,0.2);
+        }
+
+        .incorrect {
+            background: #fed7d7 !important;
+            border-color: var(--error) !important;
+            color: #742a2a !important;
+        }
+
+        .feedback {
+            min-height: 50px;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            display: none;
+            text-align: left;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-correct {
+            background: #f0fff4;
+            border-left: 5px solid var(--success);
+            color: #276749;
+        }
+
+        .feedback-incorrect {
+            background: #fff5f5;
+            border-left: 5px solid var(--error);
+            color: #9b2c2c;
+        }
+
+        .hint-btn {
+            background: none;
+            border: none;
+            color: #3182ce;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .hint-text {
+            font-style: italic;
+            color: #4a5568;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
+            background: #ebf8ff;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #bee3f8;
+        }
+
+        .next-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            margin: 15px auto 0 auto;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(44,82,130,0.2);
+        }
+
+        .next-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .score-screen {
+            display: none;
+        }
+
+        .score-title {
+            font-size: 26px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        .reset-btn {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .reset-btn:hover {
+            background: #2d3748;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="game-container">
+    <h1>Unit 6: School II</h1>
+    <h2>Vocabulary Review Game</h2>
+    
+    <div id="quiz-screen">
+        <div class="progress" id="progress">Question 1 of 18</div>
+        
+        <div class="image-container" id="image-box"></div>
+        
+        <div class="question" id="question-text">Loading question...</div>
+        
+        <button class="hint-btn" id="hint-button" onclick="showHint()">💡 Need a hint?</button>
+        <div class="hint-text" id="hint-text"></div>
+        
+        <div class="options" id="options-container"></div>
+        <div class="feedback" id="feedback-box"></div>
+        
+        <button class="next-btn" id="next-button" onclick="nextQuestion()">Next Question ➡️</button>
+    </div>
+
+    <div class="score-screen" id="score-screen">
+        <div class="score-title">Fantastic Job! 🎉</div>
+        <p>You have reviewed all the School II vocabulary words.</p>
+        <div class="score-number" id="final-score">0 / 18</div>
+        <button class="reset-btn" onclick="resetQuiz()">Play Again 🔄</button>
+    </div>
+</div>
+
+<script>
+// All questions, hints, and explanations updated to student-friendly English
+const questions = [
+    { 
+        q: "It waves on a high pole outside and represents a country or a school. What is it?", 
+        a: "flag", 
+        opts: ["flag", "board", "screen", "shelf"], 
+        h: "It starts with the letter 'F' and moves with the wind.", 
+        r: "Great job! A flag is a colorful cloth symbol.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M5 2H3v20h2v-8h14l-2-4 2-4H5V2zm0 10V6h11l-1.5 2 1.5 2H5z"/></svg>`
+    },
+    { 
+        q: "The large room inside the school where we do physical education and play indoor sports. What is it?", 
+        a: "gym", 
+        opts: ["gym", "classroom", "college", "university"], 
+        h: "It is a short three-letter word starting with 'G'.", 
+        r: "Correct! Gym is short for gymnasium.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43l-1.43-1.42-1.42 1.42 1.42 1.43zm-3.59-3.57l1.42-1.42-1.42-1.43-1.42 1.43 1.42 1.42zM7 6H5v12h2V6zm12 0h-2v12h2V6zM9 11h6v2H9v-2z"/></svg>`
+    },
+    { 
+        q: "A place to study for older students after they finish high school. What is it?", 
+        a: "college", 
+        opts: ["college", "classroom", "gym", "board"], 
+        h: "It starts with 'C' and is for higher education.", 
+        r: "Well done! A college provides advanced courses.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM4.17 10.5L12 6.23l7.83 4.27L12 14.77 4.17 10.5zM12 17c-2.76 0-5-1.79-5-4v2c0 2.21 2.24 4 5 4s5-1.79 5-4v-2c0 2.21-2.24 4-5 4z"/></svg>`
+    },
+    { 
+        q: "The flat glass surface of a computer monitor, TV, or tablet where you look at pictures. What is it?", 
+        a: "screen", 
+        opts: ["screen", "board", "shelf", "door"], 
+        h: "You look at this when you play digital learning games.", 
+        r: "That's right! A screen displays text and images.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z"/></svg>`
+    },
+    { 
+        q: "A flat board fixed to a wall or inside a cupboard to hold your books. What is it?", 
+        a: "shelf", 
+        opts: ["shelf", "desk", "door", "crayon"], 
+        h: "The plural form is 'shelves'.", 
+        r: "Correct! A shelf keeps books tidy and off the floor.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M2 19h20v2H2v-2zm1-5h3v4H3v-4zm5-4h3v8H8v-8zm5 2h3v6h-3v-6zm5-6h3v12h-3V6z"/></svg>`
+    },
+    { 
+        q: "Maths, Science, Art, and English are examples of a school... What is the word?", 
+        a: "subject", 
+        opts: ["subject", "timetable", "project", "homework"], 
+        h: "It starts with the letter 'S'.", 
+        r: "Wonderful! A subject is an area of study at school.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 11-6L12 3zm0 15c-1.38 0-2.5-1.12-2.5-2.5S10.62 13 12 13s2.5 1.12 2.5 2.5S13.38 18 12 18z"/></svg>`
+    },
+    { 
+        q: "A chart that shows the days of the week and times for each of your classes. What is it?", 
+        a: "timetable", 
+        opts: ["timetable", "homework", "break", "project"], 
+        h: "It combines the words 'time' and 'table'.", 
+        r: "Correct! A timetable tells you what class comes next.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zm-2-7h-5v5h5v-5z"/></svg>`
+    },
+    { 
+        q: "A very large institution of advanced learning where adult students get university degrees. What is it?", 
+        a: "university", 
+        opts: ["university", "college", "classroom", "gym"], 
+        h: "It is a long word that begins with the letter 'U'.", 
+        r: "Perfect! A university is an advanced higher education campus.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M12 2L1 7l11 5 11-5-11-5zM3.5 10.25V17c0 2.2 3.8 4 8.5 4s8.5-1.8 8.5-4v-6.75l-8.5 3.86-8.5-3.86z"/></svg>`
+    },
+    { 
+        q: "A big research assignment or poster that takes a few days or weeks to complete. What is it?", 
+        a: "project", 
+        opts: ["project", "homework", "mistake", "break"], 
+        h: "You often work in pairs or teams to build a science model or presentation.", 
+        r: "Nice job! A project is an extended learning activity.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`
+    },
+    { 
+        q: "The rest time between school lessons when you go out to the playground to play and eat. What is it?", 
+        a: "break", 
+        opts: ["break", "homework", "timetable", "subject"], 
+        h: "It is a short four-letter word starting with 'B'.", 
+        r: "Yes! Break is your recess time to rest and see friends.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M2 21h20v-2H2v2zM20 8h-2V5h2v3zm-4-3v3H4V5h12zm5-2H3c-1.1 0-2 .9-2 2v5c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>`
+    },
+    { 
+        q: "Exercises and tasks given by teachers to be done at home after school. What is it?", 
+        a: "homework", 
+        opts: ["homework", "project", "mistake", "timetable"], 
+        h: "It combines the place where you live ('home') and 'work'.", 
+        r: "Correct! Homework reinforces what you learned today.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`
+    },
+    { 
+        q: "Something you do wrong, like a calculation error or a misspelling in your notebook. What is it?", 
+        a: "mistake", 
+        opts: ["mistake", "crayon", "desk", "shelf"], 
+        h: "It starts with an 'M' and rhymes with 'cake'.", 
+        r: "That's right! A mistake is an error, and we learn from them!",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`
+    },
+    { 
+        q: "A small drawing stick made of colored wax used for coloring templates. What is it?", 
+        a: "crayon", 
+        opts: ["crayon", "board", "desk", "bookcase"], 
+        h: "It doesn't have wood on the outside like a regular pencil.", 
+        r: "Great! A crayon is a wax pencil used to color pictures.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M16 2l4 4L9 17H5v-4L16 2zm-1.5 2.5L6.2 12.8c-.1.2-.2.4-.2.7v1.5h1.5c.3 0 .5-.1.7-.2l8.3-8.3-1.5-1.5zM3 20h18v2H3v-2z"/></svg>`
+    },
+    { 
+        q: "A large furniture unit with several shelves designed to keep books organized. What is it?", 
+        a: "bookcase", 
+        opts: ["bookcase", "shelf", "desk", "board"], 
+        h: "It combines what you read ('book') and the container framework ('case').", 
+        r: "Perfect! A bookcase holds a large library of books.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M4 2v20h16V2H4zm2 2h3v4H6V4zm12 14H6v-2h12v2zm0-4H6v-2h12v2zm0-4h-7V4h7v4z"/></svg>`
+    },
+    { 
+        q: "The big surface on the classroom wall where the teacher writes with markers or chalk. What is it?", 
+        a: "board", 
+        opts: ["board", "screen", "desk", "door"], 
+        h: "It is a 5-letter word starting with 'B'. It can be white or green.", 
+        r: "Correct! The board is the main writing surface in class.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3H7v1h10v-1h-1v-3h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H4V4h18v12z"/></svg>`
+    },
+    { 
+        q: "The physical room in the school where you and your classmates have lessons. What is it?", 
+        a: "classroom", 
+        opts: ["classroom", "gym", "college", "university"], 
+        h: "It combines your group ('class') and the physical space ('room').", 
+        r: "Well done! A classroom is where you study with your teacher.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M12 5.5A3.5 3.5 0 0115.5 9c0 1.37-.79 2.56-1.93 3.14l1.43 2.86H9l1.43-2.86A3.5 3.5 0 0112 5.5zM3 20h18v2H3v-2z"/></svg>`
+    },
+    { 
+        q: "Your individual student table where you sit to write and do your class activities. What is it?", 
+        a: "desk", 
+        opts: ["desk", "board", "bookcase", "door"], 
+        h: "A short 4-letter word starting with 'D' and ending with 'K'.", 
+        r: "That's right! A desk holds your books and pencil case.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M2 6v2h20V6H2zm1 4v8h2v-8H3zm16 0v8h2v-8h-2zM7 10v6h10v-6H7z"/></svg>`
+    },
+    { 
+        q: "The wooden or metal panel with a handle that you open to go inside a room. What is it?", 
+        a: "door", 
+        opts: ["door", "wall", "window", "screen"], 
+        h: "It starts with 'D' and has a double letter 'O'.", 
+        r: "Correct! A door is the entrance panel to a room.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 16H6V5h12v14zm-2-8h-2v2h2v-2z"/></svg>`
+    }
+];
+
+let currentIdx = 0;
+let score = 0;
+
+function loadQuestion() {
+    const qData = questions[currentIdx];
+    document.getElementById("progress").innerText = `Question ${currentIdx + 1} of ${questions.length}`;
+    document.getElementById("question-text").innerText = qData.q;
+    document.getElementById("hint-text").style.display = "none";
+    document.getElementById("hint-button").style.display = "inline-block";
+    document.getElementById("feedback-box").style.display = "none";
+    document.getElementById("next-button").style.display = "none";
+    
+    // Updates the graphic drawing
+    document.getElementById("image-box").innerHTML = qData.svg;
+    
+    const container = document.getElementById("options-container");
+    container.innerHTML = "";
+    
+    // Shuffles multiple choice selections randomly
+    const shuffledOpts = [...qData.opts].sort(() => Math.random() - 0.5);
+    
+    shuffledOpts.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(btn, opt);
+        container.appendChild(btn);
+    });
+}
+
+function showHint() {
+    document.getElementById("hint-text").innerText = questions[currentIdx].h;
+    document.getElementById("hint-text").style.display = "block";
+    document.getElementById("hint-button").style.display = "none";
+}
+
+function checkAnswer(selectedBtn, selectedOpt) {
+    const qData = questions[currentIdx];
+    const buttons = document.getElementById("options-container").getElementsByClassName("option-btn");
+    
+    for (let btn of buttons) {
+        btn.disabled = true;
+        if (btn.innerText === qData.a) {
+            btn.classList.add("correct");
+        }
+    }
+    
+    const fb = document.getElementById("feedback-box");
+    fb.className = "feedback show ";
+    
+    if (selectedOpt === qData.a) {
+        score++;
+        selectedBtn.classList.add("correct");
+        fb.classList.add("feedback-correct");
+        fb.innerText = "🌟 " + qData.r;
+    } else {
+        selectedBtn.classList.add("incorrect");
+        fb.classList.add("feedback-incorrect");
+        fb.innerText = "❌ Incorrect. The correct answer was: " + qData.a;
+    }
+    
+    // Speaks the targeted correct vocabulary item aloud
+    speakWord(qData.a);
+    document.getElementById("next-button").style.display = "block";
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if (currentIdx < questions.length) {
+        loadQuestion();
+    } else {
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("score-screen").style.display = "block";
+        document.getElementById("final-score").innerText = `${score} / ${questions.length}`;
+    }
+}
+
+function resetQuiz() {
+    currentIdx = 0;
+    score = 0;
+    document.getElementById("quiz-screen").style.display = "block";
+    document.getElementById("score-screen").style.display = "none";
+    loadQuestion();
+}
+
+function speakWord(word) {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-GB'; // British English voice output
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+// Initial game run trigger
+loadQuestion();
+</script>
+</body>
+</html>

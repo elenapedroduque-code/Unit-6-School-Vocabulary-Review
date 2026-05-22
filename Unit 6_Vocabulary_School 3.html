@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 6: School III Vocabulary Practice</title>
+    <style>
+        :root {
+            --primary: #805ad5;
+            --primary-dark: #553c9a;
+            --success: #38a169;
+            --error: #e53e3e;
+            --bg-color: #f7fafc;
+            --card-bg: #ffffff;
+            --text-color: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        h2 {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress {
+            font-size: 14px;
+            color: #a0aec0;
+            margin-bottom: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        /* Drawing/Illustration Box matching the worksheet layout */
+        .image-container {
+            background-color: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            height: 130px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .school-icon {
+            width: 85px;
+            height: 85px;
+            fill: #4a5568;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            min-height: 50px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        button.option-btn {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        button.option-btn:hover:not(:disabled) {
+            background: #f8fafc;
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        button.option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .correct {
+            background: #c6f6d5 !important;
+            border-color: var(--success) !important;
+            color: #22543d !important;
+            font-weight: bold !important;
+            box-shadow: 0 4px 10px rgba(56,161,105,0.2);
+        }
+
+        .incorrect {
+            background: #fed7d7 !important;
+            border-color: var(--error) !important;
+            color: #742a2a !important;
+        }
+
+        .feedback {
+            min-height: 50px;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            display: none;
+            text-align: left;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-correct {
+            background: #f0fff4;
+            border-left: 5px solid var(--success);
+            color: #22543d;
+        }
+
+        .feedback-incorrect {
+            background: #fff5f5;
+            border-left: 5px solid var(--error);
+            color: #742a2a;
+        }
+
+        .hint-btn {
+            background: none;
+            border: none;
+            color: #3182ce;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .hint-text {
+            font-style: italic;
+            color: #4a5568;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
+            background: #ebf8ff;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #bee3f8;
+        }
+
+        .next-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            margin: 15px auto 0 auto;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(128,90,213,0.2);
+        }
+
+        .next-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .score-screen {
+            display: none;
+        }
+
+        .score-title {
+            font-size: 26px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        .reset-btn {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .reset-btn:hover {
+            background: #2d3748;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="game-container">
+    <h1>Unit 6: School III</h1>
+    <h2>Vocabulary Review Game</h2>
+    
+    <div id="quiz-screen">
+        <div class="progress" id="progress">Question 1 of 18</div>
+        
+        <div class="image-container" id="image-box"></div>
+        
+        <div class="question" id="question-text">Loading question...</div>
+        
+        <button class="hint-btn" id="hint-button" onclick="showHint()">💡 Need a hint?</button>
+        <div class="hint-text" id="hint-text"></div>
+        
+        <div class="options" id="options-container"></div>
+        <div class="feedback" id="feedback-box"></div>
+        
+        <button class="next-btn" id="next-button" onclick="nextQuestion()">Next Question ➡️</button>
+    </div>
+
+    <div class="score-screen" id="score-screen">
+        <div class="score-title">Amazing Job! 🎉</div>
+        <p>You finished the School III vocabulary unit!</p>
+        <div class="score-number" id="final-score">0 / 18</div>
+        <button class="reset-btn" onclick="resetQuiz()">Play Again 🔄</button>
+    </div>
+</div>
+
+<script>
+// Vocabulary items from School III worksheet
+const questions = [
+    { 
+        q: "You use this soft tool to rub out a pencil mistake in your notebook. What is it?", 
+        a: "rubber", 
+        opts: ["rubber", "ruler", "pen", "pencil"], 
+        h: "It is often pink or white, and it cleans your paper.", 
+        r: "Great job! A rubber rubs away pencil marks.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M16.24 3.56l4.95 4.94c.78.79.78 2.05 0 2.84L12 20.41H3v-9L13.41 3.56c.79-.78 2.05-.78 2.83 0zM11.41 11L8.59 13.83l2.83 2.83 2.83-2.83L11.41 11z"/></svg>`
+    },
+    { 
+        q: "The part of the room that you walk on. Desks and chairs stand on it. What is it?", 
+        a: "floor", 
+        opts: ["floor", "wall", "window", "school"], 
+        h: "It is below your shoes. Don't drop your pencils on it!", 
+        r: "That's right! The floor is the bottom surface of the room.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M2 22h20v-2H2v2zm2-4h16v-2H4v2zm3-4h10v-2H7v2z"/></svg>`
+    },
+    { 
+        q: "The board with letters and numbers that you use to type words into a computer. What is it?", 
+        a: "keyboard", 
+        opts: ["keyboard", "mouse", "computer", "page"], 
+        h: "It has many plastic keys to write letters.", 
+        r: "Excellent! A keyboard lets you type characters on the screen.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-1 12H5v-2h14v2zm0-3H5v-2h14v2zm0-3H5V7h14v2z"/></svg>`
+    },
+    { 
+        q: "The small plastic object you move with your hand to slide the arrow on a computer screen. What is it?", 
+        a: "mouse", 
+        opts: ["mouse", "keyboard", "computer", "ruler"], 
+        h: "It shares its name with a tiny animal that loves cheese.", 
+        r: "Correct! A computer mouse controls the arrow selector.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M13 2v8h7a7 7 0 00-14 0v4a7 7 0 0014 0v-2h-2v2a5 5 0 01-10 0v-4a5 5 0 015-5h2z"/></svg>`
+    },
+    { 
+        q: "One single sheet of paper in a book or notebook. It has a number at the bottom. What is it?", 
+        a: "page", 
+        opts: ["page", "story", "alphabet", "wall"], 
+        h: "Your teacher might say: 'Open your books to... 45'.", 
+        r: "Perfect! A page is one leaf side of a reading book.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`
+    },
+    { 
+        q: "A colorful picture you create using a brush and liquid colors. What is it?", 
+        a: "painting", 
+        opts: ["painting", "story", "ruler", "rubber"], 
+        h: "You do this activity in your Art class using an easel.", 
+        r: "Correct! A painting is artwork done with wet paint brushes.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M12 2A10 10 0 002 12c0 5.52 4.48 10 10 10a1 1 0 001-1v-2.5a2.5 2.5 0 012.5-2.5H19a5 5 0 005-5c0-5.52-5.37-10-12-10zm-5 9a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm3-3a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm4 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm3 3a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>`
+    },
+    { 
+        q: "A wooden tool with grey or colored graphite inside that you use to draw. You can erase it if you make a mistake.", 
+        a: "pencil", 
+        opts: ["pencil", "pen", "rubber", "ruler"], 
+        h: "You must sharpen it when the tip breaks.", 
+        r: "Nice! Pencils are great because mistakes can be rubbed out easily.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`
+    },
+    { 
+        q: "A plastic tube filled with permanent liquid ink used for writing. You cannot easily erase it. What is it?", 
+        a: "pen", 
+        opts: ["pen", "pencil", "ruler", "page"], 
+        h: "It often writes in blue, black, or red colors.", 
+        r: "That's right! A pen uses ink to make permanent text lines.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M2 21h3.42l11.16-11.16-3.42-3.42L2 17.58V21zm17.66-13.73a.996.996 0 000-1.41l-2.01-2.01a.996.996 0 00-1.41 0l-1.5 1.5 3.42 3.42 1.5-1.5z"/></svg>`
+    },
+    { 
+        q: "The outdoor area at school with games where you run, skip, and play during your break. What is it?", 
+        a: "playground", 
+        opts: ["playground", "classroom", "school", "floor"], 
+        h: "It is outside the building and has open spaces to play with friends.", 
+        r: "Wonderful! The playground is where recess fun happens.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M4 21V9h16v12h2V7h-4V3H6v4H2v14h2zm4-14h8V5H8v2zM12 11a2 2 0 100 4 2 2 0 000-4z"/></svg>`
+    },
+    { 
+        q: "A long, straight strip of plastic or wood marked in centimeters used to measure lengths. What is it?", 
+        a: "ruler", 
+        opts: ["ruler", "rubber", "pencil", "pen"], 
+        h: "It helps you draw perfect straight lines in your notebook.", 
+        r: "Correct! A ruler measures length and aids straight line drawing.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M7 2H5v20h2v-2h2v-2H7v-2h4v-2H7v-2h2v-2H7V8h4V6H7V4h2V2H7zm12 0H9v2h10v16H9v2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>`
+    },
+    { 
+        q: "A description of imaginary or real events told for entertainment. You read it in books. What is it?", 
+        a: "story", 
+        opts: ["story", "alphabet", "page", "English"], 
+        h: "Fairytales and fables are types of this narrative.", 
+        r: "That's it! A story uses plot and characters to entertain readers.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5-1.95 0-4.05.4-5.5 1.5v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.1-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.35-.75-2.1-1zM5 18.5V7c1.1-.35 2.3-.5 3.5-.5 1.34 0 2.61.27 3.5.75v11.5c-.9-.45-2.17-.75-3.5-.75-1.2 0-2.4.15-3.5.5zm14 0c-1.1-.35-2.3-.5-3.5-.5-1.33 0-2.6.3-3.5.75V7.25c.89-.48 2.16-.75 3.5-.75 1.2 0 2.4.15 3.5.5v11.5z"/></svg>`
+    },
+    { 
+        q: "The person at school whose job is to guide lessons and explain new things to the class. Who is it?", 
+        a: "teacher", 
+        opts: ["teacher", "classroom", "school", "story"], 
+        h: "This adult stands near the board and corrects your homework tasks.", 
+        r: "Correct! A teacher runs the classroom instruction activities.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm2 13.5c0-.83-.67-1.5-1.5-1.5h-1c-.83 0-1.5.67-1.5 1.5v5.5c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-5.5zM6 9h12v2H6V9z"/></svg>`
+    },
+    { 
+        q: "One of the solid vertical sides of a room that encloses it and supports the roof. What is it?", 
+        a: "wall", 
+        opts: ["wall", "floor", "window", "desk"], 
+        h: "It holds the hanging decorations, posters, and the main white board.", 
+        r: "Spot on! Walls separate different rooms inside a school.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M19 4H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 14H5v-2h6v2zm0-4H5v-2h6v2zm0-4H5V6h6v2zm8 8h-6v-2h6v2zm0-4h-6v-2h6v2zm0-4h-6V6h6v2z"/></svg>`
+    },
+    { 
+        q: "An opening made of transparent glass in a room wall that lets inside sunlight and fresh air. What is it?", 
+        a: "window", 
+        opts: ["window", "wall", "door", "floor"], 
+        h: "You look through it to check if it is raining outside on the playground.", 
+        r: "Yes! A window allows light into the room workspace.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 16H5v-6h6v6zm0-8H5V5h6v6zm8 8h-6v-6h6v6zm0-8h-6V5h6v6z"/></svg>`
+    },
+    { 
+        q: "The set of letters from A to Z that we use to spell and write all our words. What is it?", 
+        a: "alphabet", 
+        opts: ["alphabet", "story", "English", "page"], 
+        h: "It starts with A, B, C and ends with X, Y, Z.", 
+        r: "Perfect! The alphabet contains all letters used for language words.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-2v2h-2v-2h-2V9h2V7h2v2h2v2z"/></svg>`
+    },
+    { 
+        q: "An electronic machine with a monitor, keyboard, and mouse used to look at websites and play games.", 
+        a: "computer", 
+        opts: ["computer", "screen", "keyboard", "mouse"], 
+        h: "You use it during your IT lessons in the tech lab.", 
+        r: "That's it! A computer processes information and internet data.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M22 18V3H2v15H0v2h24v-2h-2zm-4 0H6v-1h12v1zM20 15H4V5h16v10z"/></svg>`
+    },
+    { 
+        q: "The international language subject you are practicing right now with these cards! What is it?", 
+        a: "English", 
+        opts: ["English", "alphabet", "story", "school"], 
+        h: "The language spoken natively in London, New York, and Sydney.", 
+        r: "Wonderful! You are excellent at your English language lessons!",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L11 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.66 0 3 1.34 3 3v1h2c1.1 0 2 .9 2 2v3.17c0 .44-.14.86-.4 1.22z"/></svg>`
+    },
+    { 
+        q: "The entire building where children go daily to learn branches of knowledge from teachers. What is it?", 
+        a: "school", 
+        opts: ["school", "classroom", "playground", "floor"], 
+        h: "It has classrooms, a gym, a library, and a main playground court.", 
+        r: "Correct! School is the community building built for young education.",
+        svg: `<svg class="school-icon" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-4l-7 3.82-7-3.82z"/></svg>`
+    }
+];
+
+let currentIdx = 0;
+let score = 0;
+
+function loadQuestion() {
+    const qData = questions[currentIdx];
+    document.getElementById("progress").innerText = `Question ${currentIdx + 1} of ${questions.length}`;
+    document.getElementById("question-text").innerText = qData.q;
+    document.getElementById("hint-text").style.display = "none";
+    document.getElementById("hint-button").style.display = "inline-block";
+    document.getElementById("feedback-box").style.display = "none";
+    document.getElementById("next-button").style.display = "none";
+    
+    // Injects the vector icon design inside the box
+    document.getElementById("image-box").innerHTML = qData.svg;
+    
+    const container = document.getElementById("options-container");
+    container.innerHTML = "";
+    
+    // Shuffles multiple choice selections dynamically
+    const shuffledOpts = [...qData.opts].sort(() => Math.random() - 0.5);
+    
+    shuffledOpts.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(btn, opt);
+        container.appendChild(btn);
+    });
+}
+
+function showHint() {
+    document.getElementById("hint-text").innerText = questions[currentIdx].h;
+    document.getElementById("hint-text").style.display = "block";
+    document.getElementById("hint-button").style.display = "none";
+}
+
+function checkAnswer(selectedBtn, selectedOpt) {
+    const qData = questions[currentIdx];
+    const buttons = document.getElementById("options-container").getElementsByClassName("option-btn");
+    
+    for (let btn of buttons) {
+        btn.disabled = true;
+        if (btn.innerText === qData.a) {
+            btn.classList.add("correct");
+        }
+    }
+    
+    const fb = document.getElementById("feedback-box");
+    fb.className = "feedback show ";
+    
+    if (selectedOpt === qData.a) {
+        score++;
+        selectedBtn.classList.add("correct");
+        fb.classList.add("feedback-correct");
+        fb.innerText = "🌟 " + qData.r;
+    } else {
+        selectedBtn.classList.add("incorrect");
+        fb.classList.add("feedback-incorrect");
+        fb.innerText = "❌ Incorrect. The right word was: " + qData.a;
+    }
+    
+    // Built-in speech browser voice output engine
+    speakWord(qData.a);
+    document.getElementById("next-button").style.display = "block";
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if (currentIdx < questions.length) {
+        loadQuestion();
+    } else {
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("score-screen").style.display = "block";
+        document.getElementById("final-score").innerText = `${score} / ${questions.length}`;
+    }
+}
+
+function resetQuiz() {
+    currentIdx = 0;
+    score = 0;
+    document.getElementById("quiz-screen").style.display = "block";
+    document.getElementById("score-screen").style.display = "none";
+    loadQuestion();
+}
+
+function speakWord(word) {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-GB'; // British English model voice
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+// Kickstart initial game trigger execution
+loadQuestion();
+</script>
+</body>
+</html>
