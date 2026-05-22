@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School I Vocabulary Review</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #333; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; width: 100%; text-align: center; }
+        h1 { color: #2b6cb0; margin-bottom: 5px; font-size: 24px; }
+        h2 { color: #4a5568; font-size: 16px; margin-bottom: 25px; font-weight: normal; }
+        .progress { font-size: 14px; color: #718096; margin-bottom: 15px; text-align: right; }
+        .question { font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #1a202c; min-height: 50px; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        button { background: #edf2f7; border: 2px solid #cbd5e0; padding: 14px; border-radius: 8px; font-size: 15px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; }
+        button:hover:not(:disabled) { background: #e2e8f0; border-color: #a0aec0; }
+        button:disabled { cursor: not-allowed; opacity: 0.8; }
+        .correct { background: #c6f6d5 !important; border-color: #48bb78 !important; color: #22543d; font-weight: bold; }
+        .incorrect { background: #fed7d7 !important; border-color: #f56565 !important; color: #742a2a; }
+        .feedback { min-height: 65px; margin-top: 15px; padding: 12px; border-radius: 6px; font-size: 14px; line-height: 1.4; display: none; text-align: left; }
+        .feedback.show { display: block; }
+        .feedback-correct { background: #f0fff4; border-left: 4px solid #38a169; color: #276749; }
+        .feedback-incorrect { background: #fff5f5; border-left: 4px solid #e53e3e; color: #9b2c2c; }
+        .hint-btn { background: none; border: none; color: #3182ce; cursor: pointer; font-size: 14px; text-decoration: underline; margin-bottom: 15px; display: inline-block; }
+        .hint-text { font-style: italic; color: #4a5568; font-size: 14px; margin-bottom: 15px; display: none; background: #ebf8ff; padding: 8px; border-radius: 4px; }
+        .next-btn { background: #3182ce; color: white; border: none; padding: 12px 30px; font-size: 16px; border-radius: 6px; cursor: pointer; display: none; margin: 20px auto 0 auto; font-weight: bold; }
+        .next-btn:hover { background: #2b6cb0; }
+        .score-screen { display: none; }
+        .score-title { font-size: 28px; color: #2b6cb0; margin-bottom: 15px; }
+        .score-number { font-size: 48px; font-weight: bold; color: #48bb78; margin-bottom: 20px; }
+        .reset-btn { background: #4a5568; color: white; border: none; padding: 12px 25px; font-size: 15px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .reset-btn:hover { background: #2d3748; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="game-container">
+    <h1>Unit 6: School I</h1>
+    <h2>Vocabulary Complete Practice</h2>
+    
+    <div id="quiz-screen">
+        <div class="progress" id="progress">Question 1 of 17</div>
+        <div class="question" id="question-text">Loading question...</div>
+        
+        <button class="hint-btn" id="hint-button" onclick="showHint()">💡 Need a hint?</button>
+        <div class="hint-text" id="hint-text"></div>
+        
+        <div class="options" id="options-container"></div>
+        <div class="feedback" id="feedback-box"></div>
+        
+        <button class="next-btn" id="next-button" onclick="nextQuestion()">Next Question ➡️</button>
+    </div>
+
+    <div class="score-screen" id="score-screen">
+        <div class="score-title">Well Done! 🎉</div>
+        <p>You have finished the School I Review.</p>
+        <div class="score-number" id="final-score">0 / 17</div>
+        <button class="reset-btn" onclick="resetQuiz()">Play Again 🔄</button>
+    </div>
+</div>
+
+<script>
+const questions = [
+    { q: "Which school subject involves drawing, painting, and creating physical crafts?", a: "art", opts: ["art", "music", "history", "science"], h: "You use colored crayons and brushes in this creative class.", r: "Art is the school branch dedicated to visual arts and creative handiwork." },
+    { q: "What do we call the study of maps, rivers, mountains, and different world countries?", a: "geography", opts: ["geography", "language", "maths", "history"], h: "This word starts with 'G' and deals with planet Earth.", r: "Geography is the systematic study of the Earth's lands, features, and inhabitants." },
+    { q: "In which subject do you learn about important events, historical figures, and the past?", a: "history", opts: ["history", "science", "IT", "art"], h: "You read about ancient Romans, Egyptians, and old empires.", r: "History is the structured academic discipline that discovers and interprets past events." },
+    { q: "What abbreviation stands for the class where you study computers, coding, and digital devices?", a: "IT", opts: ["IT", "maths", "language", "website"], h: "Two capital letters short for 'Information Technology'.", r: "IT means Information Technology, focusing on computer systems and digital data." },
+    { q: "Which subject focuses on grammar, speaking skills, vocabulary, and structural writing rules?", a: "language", opts: ["language", "history", "geography", "art"], h: "You learn how to communicate properly using words.", r: "Language class develops communication, text reading, and grammatical comprehension." },
+    { q: "In which subject do you work with numbers, geometry, equations, and mathematical calculations?", a: "maths", opts: ["maths", "science", "music", "IT"], h: "Short for 'mathematics'. It involves addition, subtraction, and shapes.", r: "Maths is the standard operational term for structural calculations and numeric concepts." },
+    { q: "What type of soft bag with two shoulder straps do you use to carry your school supplies on your back?", a: "rucksack", opts: ["rucksack", "bin", "laptop", "e-book"], h: "A very popular British English alternative term for a backpack.", r: "A rucksack is a sturdy pack carried on the shoulders, perfect for textbooks and pencil cases." },
+    { q: "What is the name of a portable personal computer that you can fold shut and carry anywhere?", a: "laptop", opts: ["laptop", "computer", "apps", "internet"], h: "It sits on your lap when you work away from a permanent desk.", r: "A laptop is a fully integrated, mobile personal computer containing built-in screens." },
+    { q: "What do you call a specific location or collection of connected informational pages on the internet?", a: "website", opts: ["website", "apps", "e-book", "internet"], h: "It often starts with 'www.' or 'http://'.", r: "A website is an online location filled with linked digital documents accessible via browsers." },
+    { q: "In which subject do you study musical notes, instruments, rhythms, and singing?", a: "music", opts: ["music", "art", "language", "maths"], h: "You listen to songs and learn how to play flutes or guitars here.", r: "Music is the artistic field organizing auditory sounds, frequencies, and rhythmic expressions." },
+    { q: "Which broad subject includes chemistry, biology, physics, nature experiments, and space?", a: "science", opts: ["science", "geography", "history", "IT"], h: "You use microscopes and observe natural elements in this class.", r: "Science is the empirical study of the physical world, living organisms, and natural laws." },
+    { q: "What do we call specialized software programs or tools running on smartphones and tablets?", a: "apps", opts: ["apps", "website", "internet", "e-book"], h: "Short for 'applications'. You download them from digital stores.", r: "Apps are targeted digital software utilities engineered for mobile operating frameworks." },
+    { q: "What is the name of the container located in the classroom corner for throwing away trash or waste paper?", a: "bin", opts: ["bin", "rucksack", "glue", "laptop"], h: "A short three-letter word where sharpenings and rubbish go.", r: "A bin is a standard waste receptacle placed in rooms to maintain sanitation and order." },
+    { q: "What do you call a digital version of a textbook that you read entirely on an electronic screen?", a: "e-book", opts: ["e-book", "dictionary", "website", "laptop"], h: "The letter 'e' stands for 'electronic' followed by the item name.", r: "An e-book is an electronic text asset structured for display on specialized reading devices." },
+    { q: "What sticky material, available in tubes or sticks, do you use to attach papers together?", a: "glue", opts: ["glue", "scissors", "bin", "rucksack"], h: "A liquid or wax adhesive that makes materials stick permanently.", r: "Glue is a specialized fluid or solid compound used for binding craft objects together." },
+    { q: "What is the name of the global network system that connects computers worldwide so people can share data?", a: "internet", opts: ["internet", "website", "apps", "laptop"], h: "The global web system you use to browse online files.", r: "The internet is the vast international network infrastructure facilitating global data transfer." },
+    { q: "Which large reference book or digital tool helps you look up word definitions and translations?", a: "dictionary", opts: ["dictionary", "e-book", "language", "website"], h: "It lists words alphabetically from A to Z with their clear meanings.", r: "A dictionary is an alphabetical resource mapping terms to definitions or native translations." },
+    { q: "What cutting tool with two handles and sharp blades do you use to cut paper, cards, or thread?", a: "scissors", opts: ["scissors", "glue", "bin", "rucksack"], h: "This object always uses a plural form and starts with 'S'.", r: "Scissors are dual-bladed mechanical tools engineered for manual shearing and paper crafts." }
+];
+
+let currentIdx = 0;
+let score = 0;
+
+function loadQuestion() {
+    const qData = questions[currentIdx];
+    document.getElementById("progress").innerText = `Question ${currentIdx + 1} of ${questions.length}`;
+    document.getElementById("question-text").innerText = qData.q;
+    document.getElementById("hint-text").style.display = "none";
+    document.getElementById("hint-button").style.display = "inline-block";
+    document.getElementById("feedback-box").style.display = "none";
+    document.getElementById("next-button").style.display = "none";
+    
+    const container = document.getElementById("options-container");
+    container.innerHTML = "";
+    
+    // Shuffle options dynamically
+    const shuffledOpts = [...qData.opts].sort(() => Math.random() - 0.5);
+    
+    shuffledOpts.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(btn, opt);
+        container.appendChild(btn);
+    });
+}
+
+function showHint() {
+    document.getElementById("hint-text").innerText = questions[currentIdx].h;
+    document.getElementById("hint-text").style.display = "block";
+    document.getElementById("hint-button").style.display = "none";
+}
+
+function checkAnswer(selectedBtn, selectedOpt) {
+    const qData = questions[currentIdx];
+    const buttons = document.getElementById("options-container").getElementsByTagName("button");
+    
+    for (let btn of buttons) {
+        btn.disabled = true;
+        if (btn.innerText === qData.a) {
+            btn.classList.add("correct");
+        }
+    }
+    
+    const fb = document.getElementById("feedback-box");
+    fb.className = "feedback show ";
+    
+    if (selectedOpt === qData.a) {
+        score++;
+        selectedBtn.classList.add("correct");
+        fb.classList.add("feedback-correct");
+        fb.innerText = "🌟 Correct! " + qData.r;
+        speakWord(qData.a);
+    } else {
+        selectedBtn.classList.add("incorrect");
+        fb.classList.add("feedback-incorrect");
+        fb.innerText = "❌ Incorrect. " + qData.r;
+        speakWord(qData.a);
+    }
+    
+    document.getElementById("next-button").style.display = "block";
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if (currentIdx < questions.length) {
+        loadQuestion();
+    } else {
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("score-screen").style.display = "block";
+        document.getElementById("final-score").innerText = `${score} / ${questions.length}`;
+    }
+}
+
+function resetQuiz() {
+    currentIdx = 0;
+    score = 0;
+    document.getElementById("quiz-screen").style.display = "block";
+    document.getElementById("score-screen").style.display = "none";
+    loadQuestion();
+}
+
+function speakWord(word) {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-GB';
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+// Start game
+loadQuestion();
+</script>
+</body>
+</html>
