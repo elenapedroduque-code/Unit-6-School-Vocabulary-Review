@@ -5,31 +5,56 @@
     <title>Unit 6 – School Vocabulary</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #dfe9f3, #ffffff);
             padding: 40px;
             text-align: center;
         }
+
         h1 {
-            color: #333;
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 10px;
         }
+
+        p {
+            color: #34495e;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
         .container {
-            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
         }
-        a {
-            display: block;
-            margin: 15px auto;
-            padding: 15px 25px;
-            width: 280px;
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 320px;
+            padding: 18px 25px;
             background: #4a90e2;
             color: white;
             text-decoration: none;
-            border-radius: 8px;
-            font-size: 18px;
-            transition: 0.2s;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            transition: 0.25s;
         }
-        a:hover {
+
+        .btn:hover {
             background: #357ABD;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.20);
+        }
+
+        .icon {
+            font-size: 26px;
         }
     </style>
 </head>
@@ -39,11 +64,18 @@
     <p>Select an activity:</p>
 
     <div class="container">
-        <a href="activity1.html">Activity 1</a>
-        <a href="activity2.html">Activity 2</a>
-        <a href="activity3.html">Activity 3</a>
+        <a class="btn" href="activity1.html">
+            <span class="icon">📘</span> Activity 1
+        </a>
+
+        <a class="btn" href="activity2.html">
+            <span class="icon">✏️</span> Activity 2
+        </a>
+
+        <a class="btn" href="activity3.html">
+            <span class="icon">🎨</span> Activity 3
+        </a>
     </div>
 
 </body>
 </html>
-
